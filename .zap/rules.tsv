@@ -1,0 +1,4 @@
+# ZAP baseline scan rule overrides
+# Format: <rule-id> <IGNORE|WARN|FAIL> <optional-note>
+# Customize as needed after reviewing initial scan results
+10202	IGNORE	(Absence of Anti-CSRF Tokens - expected for stateless JWT API)
