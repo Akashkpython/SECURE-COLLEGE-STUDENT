@@ -172,7 +172,7 @@ class SecureServiceRequestApplicationTests {
 
     @Test
     @Order(11)
-    @DisplayName("Wrong password returns 400")
+    @DisplayName("Wrong password returns 401 Unauthorized")
     void testWrongPassword() throws Exception {
         LoginRequest request = new LoginRequest();
         request.setEmail("rahul@example.com");
@@ -181,13 +181,13 @@ class SecureServiceRequestApplicationTests {
         mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.message").value("Invalid email or password"));
     }
 
     @Test
     @Order(12)
-    @DisplayName("Non-existent email login returns 400")
+    @DisplayName("Non-existent email login returns 401 Unauthorized")
     void testNonExistentEmailLogin() throws Exception {
         LoginRequest request = new LoginRequest();
         request.setEmail("nobody@example.com");
@@ -196,7 +196,7 @@ class SecureServiceRequestApplicationTests {
         mockMvc.perform(post("/api/auth/login")
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(request)))
-                .andExpect(status().isBadRequest())
+                .andExpect(status().isUnauthorized())
                 .andExpect(jsonPath("$.message").value("Invalid email or password"));
     }
 

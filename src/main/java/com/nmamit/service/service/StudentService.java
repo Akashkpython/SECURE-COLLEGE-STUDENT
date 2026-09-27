@@ -4,6 +4,7 @@ import com.nmamit.service.dto.*;
 import com.nmamit.service.entity.Role;
 import com.nmamit.service.entity.Student;
 import com.nmamit.service.exception.BadRequestException;
+import com.nmamit.service.exception.InvalidCredentialsException;
 import com.nmamit.service.exception.ResourceNotFoundException;
 import com.nmamit.service.repository.StudentRepository;
 import com.nmamit.service.security.JwtProvider;
@@ -59,10 +60,10 @@ public class StudentService {
      */
     public JwtResponse login(LoginRequest request) {
         Student student = studentRepository.findByEmail(request.getEmail())
-                .orElseThrow(() -> new BadRequestException("Invalid email or password"));
+                .orElseThrow(() -> new InvalidCredentialsException("Invalid email or password"));
 
         if (!passwordEncoder.matches(request.getPassword(), student.getPasswordHash())) {
-            throw new BadRequestException("Invalid email or password");
+            throw new InvalidCredentialsException("Invalid email or password");
         }
 
         String token = jwtProvider.generateToken(student.getEmail(), student.getRole().name());
